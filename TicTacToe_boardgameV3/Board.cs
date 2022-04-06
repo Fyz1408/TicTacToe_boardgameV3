@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicTacToe_boardgameV3;
 
 namespace TicTacToe_boardgame
 {
@@ -10,8 +11,9 @@ namespace TicTacToe_boardgame
     public class Board
     {
         public int BoardID;
-        public abstract CurrentTurn();
-        //public List<Field>
+
+        List<Field> Fields = new List<Field>();
+        
         public char[] arr = { '1', '2', '3', '3', '4', '5', '6', '7', '8', '9' };
 
         //Boad metode der laver boardet
