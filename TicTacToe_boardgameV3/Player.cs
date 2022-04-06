@@ -3,8 +3,8 @@ namespace TicTacToe_boardgameV3
 {
     public class Player
     {
-        private string PlayerName;
-        private Token.TokenType PlayerType;
+        public string PlayerName;
+        public Token.TokenType PlayerType;
         
         public Player(string name, string token ) 
         { 
@@ -19,5 +19,13 @@ namespace TicTacToe_boardgameV3
                 PlayerType = Token.TokenType.Cross; 
             }
         }
+
+        public void getPlayerName()
+        {
+            
+            
+        } 
+        
+
     }
 }
