@@ -9,54 +9,49 @@ namespace TicTacToe_boardgameV3
         
         public Board Board;
 
+        private int GameStatus;
+
         public Game()
         {
-            string player1Name;
-            string player2Name;
-            string player1Pick;
-            string player2Pick;
+            Board bd = new Board();
+            Player p1 = new Player();
+            Player p2 = new Player();
+            
+            Console.WriteLine("Welcome to tic tac toe");
+                
+            Console.WriteLine("Enter player 1 name:");
+                
+            p1.PlayerName = Console.ReadLine();
+                
+            Console.WriteLine("Welcome {0} !", p1.PlayerName);
+            
+            Console.WriteLine("Enter player 2's name:");
+            
+            p2.PlayerName = Console.ReadLine();
+            
+            Console.WriteLine("Welcome {0} !", p2.PlayerName);
+            
+            Console.WriteLine("{0} Will play with noughts: O and {1} will play with crosses: X", p1.PlayerName, p2.PlayerName);
+            
+            Console.WriteLine("Lets get started, Click when you're ready to play!");
 
-            Console.WriteLine("Enter player 1 name");
-            
-            player1Name = Console.ReadLine();
-            
-            Console.WriteLine("Welcome {0} !", player1Name);
-            
-            Console.WriteLine("Enter player 2 name");
-            
-            player2Name = Console.ReadLine();
-            
-            Console.WriteLine("Welcome {0} !", player2Name);
-            
-            Console.WriteLine("Now {0}, Pick nought or cross:", player1Name);
-            Console.WriteLine("O for nought \nX for cross");
-
-            player1Pick = Console.ReadLine();
-            
-            if (player1Pick == "O" || player1Pick == "o" )
-            {
-                Console.WriteLine("Valid!");
-                player2Pick = "x";
-            } else if (player1Pick == "X" || player1Pick == "x")
-            {
-                Console.WriteLine("Valid!");
-                player2Pick = "o";
-            }
-            else
-            {
-                Console.WriteLine("Invalid! ");
-                return;
-            }
-            
-            Console.WriteLine("{0} chose {1}", player1Name, player1Pick);
-            Console.WriteLine("That means {0} will play with {1}", player2Name, player2Pick);
-
-            var p1 = new Player(player1Name, player1Pick);
-            var p2 = new Player(player1Name, player1Pick);
-
-            Console.WriteLine("Press any key to begin");
             Console.ReadKey();
+            
             Console.Clear();
+            
+            bd.CreateBoard();
+
+            while (GameStatus != 1 && GameStatus != -1)
+            {
+                
+                
+            }
+            Console.WriteLine(p2.PlayerType);
+            
+            Console.ReadKey();
+            Console.WriteLine(p2.PlayerType);
+            
+            Console.ReadKey();
 
         }
 
