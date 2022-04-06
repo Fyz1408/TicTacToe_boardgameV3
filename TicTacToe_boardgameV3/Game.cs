@@ -54,12 +54,9 @@ namespace TicTacToe_boardgameV3
             var p1 = new Player(player1Name, player1Pick);
             var p2 = new Player(player1Name, player1Pick);
 
-            Console.WriteLine(p1.PlayerName);
-            Console.WriteLine(p1.PlayerType);
-            Console.WriteLine(p2.PlayerName);
-            Console.WriteLine(p2.PlayerType);
-            
+            Console.WriteLine("Press any key to begin");
             Console.ReadKey();
+            Console.Clear();
 
         }
 
@@ -77,8 +74,19 @@ namespace TicTacToe_boardgameV3
 
         private void ValidateResults(Board board)
         {
-         
+
         }
-        
+
+        public bool checkDraw(int takeTurn)
+        {
+            if (takeTurn == 9)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        } 
     }
 }
