@@ -44,8 +44,15 @@ namespace TicTacToe_boardgameV3
                     Console.WriteLine("{0}'s turn", Players[1].PlayerName);
                 }
 
-                bd.CreateBoard(intro);
-                intro = false;
+                if (intro)
+                {
+                    bd.CreateBoard();
+                    intro = false;    
+                }
+                else
+                {
+                    bd.DisplayBoard();
+                }
                 
                 while (!int.TryParse(Console.ReadLine(), out playerPick))
                 {

@@ -13,11 +13,9 @@ namespace TicTacToe_boardgame
         public List<Field> Fields;
         
         //Boad metode der laver boardet
-        public void CreateBoard(bool shouldMakeNewBoard)
+        public void CreateBoard()
         {
-            if (shouldMakeNewBoard)
-            {
-                Fields = new List<Field>();
+            Fields = new List<Field>();
                     
                 for (int i = 0; i <= 9; i++)
                 { 
@@ -25,8 +23,12 @@ namespace TicTacToe_boardgame
                         new Field(i)
                     );
                 }
-            }
+            DisplayBoard();
+            
+        }
 
+        public void DisplayBoard()
+        {
             Console.WriteLine("     |     |      ");
             Console.WriteLine("  {0}  |  {1}  |  {2}", Fields[1].FieldState, Fields[2].FieldState, Fields[3].FieldState);
             Console.WriteLine("_____|_____|_____ ");
@@ -36,7 +38,6 @@ namespace TicTacToe_boardgame
             Console.WriteLine("     |     |      ");
             Console.WriteLine("  {0}  |  {1}  |  {2}", Fields[7].FieldState, Fields[8].FieldState, Fields[9].FieldState);
             Console.WriteLine("     |     |      ");
-
         }
     }
 }
