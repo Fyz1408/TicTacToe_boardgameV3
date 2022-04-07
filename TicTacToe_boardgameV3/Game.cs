@@ -19,17 +19,16 @@ namespace TicTacToe_boardgameV3
 
             int playerCount = 2;
             int currentTurn = 0;
-            bool showIntro = true;
+            bool intro = true;
             int playerPick;
 
             while (GameStatus != 1 && GameStatus != -1)
             {
                 Console.Clear();
                 
-                if (showIntro)
+                if (intro)
                 {
                     currentTurn = StartGame(playerCount);
-                    showIntro = false;
                 }
 
                 Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].PlayerName,  Players[0].PlayerType, Players[1].PlayerName,  Players[1].PlayerType);
@@ -42,7 +41,8 @@ namespace TicTacToe_boardgameV3
                     }
                 }
 
-                bd.CreateBoard();
+                bd.CreateBoard(intro);
+                intro = false;
                 
                 while (!int.TryParse(Console.ReadLine(), out playerPick))
                 {
@@ -50,8 +50,7 @@ namespace TicTacToe_boardgameV3
                 }
                 
                 TakeTurn(currentTurn, playerPick, bd);
-                
-                Console.ReadKey();
+                currentTurn++;
                 
                 ValidateResults(bd);
                 
@@ -118,24 +117,22 @@ namespace TicTacToe_boardgameV3
 
         private void TakeTurn( int currentTurn, int FieldPicked, Board bd)
         {
-            if (bd.arr[FieldPicked] != 'X' && bd.arr[FieldPicked] != 'O')
+            if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
             {
                 //if the turn is player 2 then mark O else mark X  
                 if (currentTurn % 2 == 0) 
                 {
-                    bd.arr[FieldPicked] = 'O';
-                    currentTurn++;
+                    bd.Fields[FieldPicked].FieldState = "O";
                 }
                 else
                 {
-                    bd.arr[FieldPicked] = 'X';
-                    currentTurn++;
+                    bd.Fields[FieldPicked].FieldState = "X";
                 }
             }
 
             else
             {
-                Console.WriteLine("Sorry the row {0} is already marked with {1}\n", FieldPicked, bd.arr[FieldPicked]);
+                Console.WriteLine("Sorry the row {0} is already marked with {1}\n", FieldPicked, bd.Fields[FieldPicked]);
                 Console.WriteLine("Please wait 2 seconds while the board is loading again.....");
                 Thread.Sleep(2000);
 
