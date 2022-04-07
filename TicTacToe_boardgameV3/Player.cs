@@ -12,9 +12,6 @@ namespace TicTacToe_boardgameV3
         public Player(int playerId)
         {
             PlayerID = playerId;
-
-        } 
-        
-
+        }
     }
 }
