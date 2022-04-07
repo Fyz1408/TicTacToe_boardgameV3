@@ -4,8 +4,8 @@ namespace TicTacToe_boardgameV3
     {
         public enum TokenType
         {
-            Cross,
-            Nought
+            X,
+            O
         }
     }
 }

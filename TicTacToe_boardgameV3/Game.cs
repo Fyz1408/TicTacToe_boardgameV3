@@ -103,7 +103,7 @@ namespace TicTacToe_boardgameV3
         }
 
         private void ValidateResults(Board board)
-        {
+        { 
 
         }
 
