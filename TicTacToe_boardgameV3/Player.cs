@@ -9,9 +9,7 @@ namespace TicTacToe_boardgameV3
         public void getPlayerName()
         {
             
-            
-        } 
-        
+        }  
 
     }
 }
