@@ -7,7 +7,7 @@ namespace TicTacToe_boardgameV3
 {
     public class Game
     {
-        public List<Player> Players;
+        private List<Player> Players;
         
         public Board Board;
 
@@ -16,15 +16,13 @@ namespace TicTacToe_boardgameV3
         public Game()
         {
             var bd = new Board();
-            var p1 = new Player(1);
-            var p2 = new Player(2);
-            
+
             int playerCount = 2;
             int currentTurn = 0;
             bool intro = true;
             int playerPick;
 
-            while (GameStatus != 1 && GameStatus != -1)
+            while (intro)
             {
                 Console.Clear();
                 
@@ -33,45 +31,50 @@ namespace TicTacToe_boardgameV3
                     currentTurn = StartGame(playerCount);
                 }
 
-                Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].PlayerName,  Players[0].PlayerType, Players[1].PlayerName,  Players[1].PlayerType);
+                while (GameStatus != 1 && GameStatus != -1)
+                {
+                    Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].Name, Players[0].PlayerToken, Players[1].Name,  Players[1].PlayerToken);
                 
-                if (currentTurn % 2 == 0) 
-                {
-                    Console.WriteLine("{0}'s turn", Players[0].PlayerName);
-                }
-                else
-                {
-                    Console.WriteLine("{0}'s turn", Players[1].PlayerName);
-                }
+                    if (currentTurn % 2 == 0) 
+                    {
+                        Console.WriteLine("{0}'s turn", Players[0].Name);
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0}'s turn", Players[1].Name);
+                    }
 
-                if (intro)
-                {
-                    bd.CreateBoard();
-                    intro = false;    
-                }
-                else
-                {
-                    bd.DisplayBoard();
-                }
+                    if (intro)
+                    {
+                        bd.CreateBoard();
+                        intro = false;    
+                    }
+                    else
+                    {
+                        bd.DisplayBoard();
+                    }
                 
-                while (!int.TryParse(Console.ReadLine(), out playerPick))
-                {
-                    Console.WriteLine("Not valid ");
-                }
+                    while (!int.TryParse(Console.ReadLine(), out playerPick))
+                    {
+                        Console.WriteLine("Not valid ");
+                    }
                 
-                TakeTurn(currentTurn, playerPick, bd);
-                currentTurn++;
+                    TakeTurn(Players[0].PlayerToken, playerPick, bd);
+                    currentTurn++;
                 
-                ValidateResults(bd);
+                    ValidateResults(bd);
                 
-                if (GameStatus == 1)
-                {
-                    Console.WriteLine("SOMEONE WON! {0}", currentTurn);
-                }
+                    if (GameStatus == 1)
+                    {
+                        Console.WriteLine("SOMEONE WON! {0}", currentTurn);
+                        GameStatus = 0;
+                    }
 
-                if (GameStatus == -1)
-                {
-                    Console.WriteLine("DRAW");
+                    if (GameStatus == -1)
+                    {
+                        Console.WriteLine("DRAW {0}", currentTurn);
+                        GameStatus = 0;
+                    }
                 }
             }
         }
@@ -80,29 +83,33 @@ namespace TicTacToe_boardgameV3
         {
             var rnd = new Random();
             Players = new List<Player>();
-                    
-            for (int i = 1; i <= playerCount; i++)
-            { 
-                Players.Add(
-                    new Player(i)
-                    );
-            }
-            
+            char tokenType;
+
             Console.Clear();
 
             Console.WriteLine("Welcome to tic tac toe");
                 
-            foreach (var p in Players)
+            for (int i = 1; i <= playerCount; i++)
             { 
-                Console.WriteLine("Enter player {0} name:", p.PlayerID);
-                p.PlayerName = Console.ReadLine();
+                Players.Add(
+                    new Player()
+                ); 
+                
+                Console.WriteLine("Enter player {0} name:", i);
+                int p = i - 1;
+                
+                Players[p].Name = Console.ReadLine();
+
+                tokenType = p == 1 ? 'X' : 'O';
+                
+                Players[p].AddTokens(3, tokenType);
             }
             
             Console.Clear();
 
-            Console.WriteLine("Welcome {0} and {1}! \n", Players[0].PlayerName, Players[1].PlayerName);
+            Console.WriteLine("Welcome {0} and {1}! \n", Players[0].Name, Players[1].Name);
             
-            Console.WriteLine("{0} will play with noughts: O and {1} will play with crosses: X \n", Players[0].PlayerName, Players[1].PlayerName);
+            Console.WriteLine("{0} will play with noughts: {1} and {2} will play with crosses: {3} \n", Players[0].Name, Players[0].PlayerTokens[0], Players[1].Name, Players[1].PlayerTokens[0]);
            
             Console.WriteLine("Lets get started, press a key when you are ready to move on");
 
@@ -111,7 +118,7 @@ namespace TicTacToe_boardgameV3
             
             Console.Write("Randomizing who will start... \n");
 
-            int playerIdToStart = rnd.Next(0, playerCount+1);
+            int playerToStart = rnd.Next(0, playerCount+1);
                     
             var pgb = new ProgressBar();
             using (pgb) {
@@ -123,32 +130,17 @@ namespace TicTacToe_boardgameV3
 
             Console.Clear();
             
-            foreach (var p in Players)
-            {
-                if (p.PlayerID == playerIdToStart)
-                {
-                    Console.WriteLine("{0} was chosen to start! Click when you're ready to play!", p.PlayerName);
-                }
-            }
-            
-            return playerIdToStart; 
+            Console.WriteLine("{0} was chosen to start! Click when you're ready to play!", Players[playerToStart].Name);
+                
+            return playerToStart; 
         }
 
-        private void TakeTurn( int currentTurn, int FieldPicked, Board bd)
+        private void TakeTurn( Token.TokenType token, int FieldPicked, Board bd)
         {
             if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
             {
-                //if the turn is player 2 then mark O else mark X  
-                if (currentTurn % 2 == 0) 
-                {
-                    bd.Fields[FieldPicked].FieldState = "O";
-                }
-                else
-                {
-                    bd.Fields[FieldPicked].FieldState = "X";
-                }
+                bd.Fields[FieldPicked].FieldState = token.ToString();
             }
-
             else
             {
                 Console.WriteLine("Sorry the row {0} is already marked with {1}\n", FieldPicked, bd.Fields[FieldPicked]);
@@ -159,69 +151,79 @@ namespace TicTacToe_boardgameV3
         }
 
         private void ValidateResults(Board bd)
-        { 
-
+        {
             // First Row   1/2/3
-            if (bd.Fields[1].FieldState == bd.Fields[2].FieldState && bd.Fields[2].FieldState == bd.Fields[3].FieldState)
+            if (bd.Fields[1].FieldState == bd.Fields[2].FieldState &&
+                bd.Fields[2].FieldState == bd.Fields[3].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Second Row 4/5/6
-            else if (bd.Fields[4].FieldState == bd.Fields[5].FieldState && bd.Fields[5].FieldState == bd.Fields[6].FieldState)
+            else if (bd.Fields[4].FieldState == bd.Fields[5].FieldState &&
+                     bd.Fields[5].FieldState == bd.Fields[6].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Third Row 6/7/8
-            else if (bd.Fields[6].FieldState == bd.Fields[7].FieldState && bd.Fields[7].FieldState == bd.Fields[8].FieldState)
+            else if (bd.Fields[6].FieldState == bd.Fields[7].FieldState &&
+                     bd.Fields[7].FieldState == bd.Fields[8].FieldState)
             {
                 GameStatus = 1;
             }
-                
+
             // First Column 1/4/7
-            else if (bd.Fields[1].FieldState == bd.Fields[4].FieldState && bd.Fields[4].FieldState == bd.Fields[7].FieldState)
+            else if (bd.Fields[1].FieldState == bd.Fields[4].FieldState &&
+                     bd.Fields[4].FieldState == bd.Fields[7].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Second Column 2/5/8
-            else if (bd.Fields[2].FieldState == bd.Fields[5].FieldState && bd.Fields[5].FieldState == bd.Fields[8].FieldState)
+            else if (bd.Fields[2].FieldState == bd.Fields[5].FieldState &&
+                     bd.Fields[5].FieldState == bd.Fields[8].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Third Column 3/6/9
 
-            else if (bd.Fields[3].FieldState == bd.Fields[6].FieldState && bd.Fields[6].FieldState == bd.Fields[9].FieldState)
+            else if (bd.Fields[3].FieldState == bd.Fields[6].FieldState &&
+                     bd.Fields[6].FieldState == bd.Fields[9].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Diagonally 1/5/9
-            else if (bd.Fields[1].FieldState == bd.Fields[5].FieldState && bd.Fields[5].FieldState == bd.Fields[9].FieldState)
+            else if (bd.Fields[1].FieldState == bd.Fields[5].FieldState &&
+                     bd.Fields[5].FieldState == bd.Fields[9].FieldState)
             {
                 GameStatus = 1;
             }
 
             // Diagonally 3/5/7
-            else if (bd.Fields[3].FieldState == bd.Fields[5].FieldState && bd.Fields[5].FieldState == bd.Fields[7].FieldState)
+            else if (bd.Fields[3].FieldState == bd.Fields[5].FieldState &&
+                     bd.Fields[5].FieldState == bd.Fields[7].FieldState)
             {
                 GameStatus = 1;
             }
-                
+
             // Draw
 
-            else if (bd.Fields[1].FieldState != "1" && bd.Fields[2].FieldState != "2" && bd.Fields[3].FieldState != "3" && bd.Fields[4].FieldState != "4" && bd.Fields[5].FieldState != "5" && bd.Fields[6].FieldState != "6" && bd.Fields[7].FieldState != "7" && bd.Fields[8].FieldState != "8" && bd.Fields[9].FieldState != "9")
+            else if (bd.Fields[1].FieldState != "1" && bd.Fields[2].FieldState != "2" &&
+                     bd.Fields[3].FieldState != "3" && bd.Fields[4].FieldState != "4" &&
+                     bd.Fields[5].FieldState != "5" && bd.Fields[6].FieldState != "6" &&
+                     bd.Fields[7].FieldState != "7" && bd.Fields[8].FieldState != "8" && 
+                     bd.Fields[9].FieldState != "9")
             {
                 GameStatus = -1;
             }
-                
+
             else
             {
                 // game still going
                 GameStatus = 0;
-
             }
         }
     }

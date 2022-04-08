@@ -2,14 +2,11 @@
 {
     public class Field
     {
-        public int FieldId;
-        
         public string FieldState { get; set; }
         
-        public Field(int fieldID)
+        public Field(int fieldId)
         {
-            FieldState = fieldID.ToString();
-            FieldId = fieldID;
+            FieldState = fieldId.ToString();
         }
     }
 }

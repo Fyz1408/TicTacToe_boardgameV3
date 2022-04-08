@@ -3,15 +3,27 @@ namespace TicTacToe_boardgameV3
 {
     public class Player
     {
-        public int PlayerID { get; set; }
+        public Token.TokenType PlayerToken { get; set; }
         
-        public string PlayerName { get; set; }
+        public List<Token> PlayerTokens;
         
-        public Token.TokenType PlayerType;
-        
-        public Player(int playerId)
+        public string Name { get; set; }
+
+        public char getTokenType()
         {
-            PlayerID = playerId;
+            // get token type
+            return 'x';
+        }
+        
+        public void AddTokens(int tokenAmount, char tokenType)
+        {
+            PlayerTokens = new List<Token>(tokenType);
+                    
+            for (int i = 0; i <= tokenAmount; i++)
+            { 
+                PlayerTokens.Add(new Token(tokenType)
+                );
+            }
         }
     }
 }
