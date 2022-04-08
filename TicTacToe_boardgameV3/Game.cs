@@ -9,7 +9,7 @@ namespace TicTacToe_boardgameV3
     {
         private List<Player> Players;
         
-        public Board Board;
+        private Board Board;
 
         private int GameStatus;
 
@@ -20,8 +20,6 @@ namespace TicTacToe_boardgameV3
             int playerCount = 2;
             int currentTurn = 0;
             bool intro = true;
-            int playerPick;
-
             while (intro)
             {
                 Console.Clear();
@@ -33,16 +31,12 @@ namespace TicTacToe_boardgameV3
 
                 while (GameStatus != 1 && GameStatus != -1)
                 {
-                    Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].Name, Players[0].PlayerToken, Players[1].Name,  Players[1].PlayerToken);
+                    Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].Name, Players[0].PlayerTokens, Players[1].Name,  Players[1].PlayerTokens);
                 
-                    if (currentTurn % 2 == 0) 
-                    {
-                        Console.WriteLine("{0}'s turn", Players[0].Name);
-                    }
-                    else
-                    {
-                        Console.WriteLine("{0}'s turn", Players[1].Name);
-                    }
+                    int currentPlayerId;
+                    currentPlayerId = currentTurn % 2 != 0 ? 1 : 0;
+                    
+                    Console.WriteLine("{0}'s turn", Players[currentPlayerId].Name);
 
                     if (intro)
                     {
@@ -53,13 +47,14 @@ namespace TicTacToe_boardgameV3
                     {
                         bd.DisplayBoard();
                     }
-                
+
+                    int playerPick;
                     while (!int.TryParse(Console.ReadLine(), out playerPick))
                     {
                         Console.WriteLine("Not valid ");
                     }
                 
-                    TakeTurn(Players[0].PlayerToken, playerPick, bd);
+                    TakeTurn(Players[currentPlayerId].PlayerTokens[0], playerPick, bd);
                     currentTurn++;
                 
                     ValidateResults(bd);
@@ -67,13 +62,13 @@ namespace TicTacToe_boardgameV3
                     if (GameStatus == 1)
                     {
                         Console.WriteLine("SOMEONE WON! {0}", currentTurn);
-                        GameStatus = 0;
+                        Console.ReadKey();
                     }
 
                     if (GameStatus == -1)
                     {
                         Console.WriteLine("DRAW {0}", currentTurn);
-                        GameStatus = 0;
+                        Console.ReadKey();
                     }
                 }
             }
@@ -83,7 +78,7 @@ namespace TicTacToe_boardgameV3
         {
             var rnd = new Random();
             Players = new List<Player>();
-            char tokenType;
+            Token.TokenType tokenType;
 
             Console.Clear();
 
@@ -100,7 +95,7 @@ namespace TicTacToe_boardgameV3
                 
                 Players[p].Name = Console.ReadLine();
 
-                tokenType = p == 1 ? 'X' : 'O';
+                tokenType = p == 1 ? Token.TokenType.X : Token.TokenType.O;
                 
                 Players[p].AddTokens(3, tokenType);
             }
@@ -109,7 +104,7 @@ namespace TicTacToe_boardgameV3
 
             Console.WriteLine("Welcome {0} and {1}! \n", Players[0].Name, Players[1].Name);
             
-            Console.WriteLine("{0} will play with noughts: {1} and {2} will play with crosses: {3} \n", Players[0].Name, Players[0].PlayerTokens[0], Players[1].Name, Players[1].PlayerTokens[0]);
+            Console.WriteLine("{0} will play with: {1} and {2} will play with: {3} \n", Players[0].Name, Players[0].GetTokenType(), Players[1].Name, Players[1].GetTokenType());
            
             Console.WriteLine("Lets get started, press a key when you are ready to move on");
 
@@ -135,7 +130,7 @@ namespace TicTacToe_boardgameV3
             return playerToStart; 
         }
 
-        private void TakeTurn( Token.TokenType token, int FieldPicked, Board bd)
+        private void TakeTurn( Token token, int FieldPicked, Board bd)
         {
             if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
             {

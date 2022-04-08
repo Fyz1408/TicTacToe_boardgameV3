@@ -10,22 +10,10 @@ namespace TicTacToe_boardgameV3
 
         private TokenType setTokenType{ get; set; }
         
-        public Token(char token)
+        public Token(TokenType TokenType)
         {
-            switch (token)
-            {
-                case 'x':
-                case 'X':
-                    setTokenType = TokenType.X;
-                return;
-                case 'o':
-                case 'O':
-                    setTokenType = TokenType.O;
-                    return;
-                default:
-                    return;
-                
-            }
+            setTokenType = TokenType;
         }
+        
     }
 }
