@@ -11,29 +11,26 @@ namespace TicTacToe_boardgameV3
         private int GameStatus;
 
         public Game()
-        {
-            Board bd = new Board();
-            Player p1 = new Player();
-            Player p2 = new Player(); 
-            
-            int currentTurn = 0;
-            
+        { 
             bool intro = true;
             
             while (intro)
             {
+                
+                Board bd = new Board();
+                Player p1 = new Player();
+                Player p2 = new Player();
+
+                GameStatus = 0;
+                
+                int currentTurn = StartGame( p1, p2);
+
                 Console.Clear();
                 
-                if (intro)
-                {
-                    currentTurn = StartGame( p1, p2);
-                }
-
                 while (GameStatus != 1 && GameStatus != -1)
                 {
-                    int currentPlayerId;
-                    currentPlayerId = currentTurn % 2 != 0 ? 1 : 0;
-                    var cpi = currentPlayerId == 1 ? p1 : p2;
+                    int currentPlayerId = currentTurn % 2 != 0 ? 1 : 0;
+                    Player cpi = currentPlayerId == 1 ? p1 : p2;
                     
                     Console.Clear();
                     Console.WriteLine("{0}:{1} and {2}:{3}", p1.Name, p1.Token, p2.Name, p2.Token);
@@ -99,8 +96,8 @@ namespace TicTacToe_boardgameV3
 
                 Console.WriteLine("To play again enter P, to quit enter Q");
 
-                intro = Console.ReadLine() == "p" || Console.ReadLine() == "P";
-                
+                string input = Console.ReadLine();
+                if (input != null) intro = input.ToUpper() == "P";
             }
         }
 
