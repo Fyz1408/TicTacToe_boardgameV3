@@ -78,7 +78,6 @@ namespace TicTacToe_boardgameV3
         private int StartGame( int playerCount, Player p1, Player p2)
         {
             var rnd = new Random();
-            Token.TokenType tokenType;
 
             Console.Clear();
 
@@ -88,16 +87,20 @@ namespace TicTacToe_boardgameV3
             {
                 Console.WriteLine("Enter player {0} name:", i);
                 var p = i == 1 ? p1 : p2;
-
+                
                 p.Name = Console.ReadLine();
                 
             }
+
+            p1.Token = Token.TokenType.X;
             
+            p2.Token = Token.TokenType.O;
+
             Console.Clear();
 
             Console.WriteLine("Welcome {0} and {1}! \n", p1.Name, p2.Name);
             
-            Console.WriteLine("{0} will play with: {1} and {2} will play with: {3} \n", p1.Name, p1.GetTokenType(), p2.Name, p2.GetTokenType());
+            Console.WriteLine("{0} will play with: {1} and {2} will play with: {3} \n", p1.Name, p1.Token, p2.Name, p2.Token);
            
             Console.WriteLine("Lets get started, press a key when you are ready to move on");
 

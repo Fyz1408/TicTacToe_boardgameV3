@@ -22,6 +22,8 @@ namespace TicTacToe_boardgameV3
             }
         }
         
+        public Token.TokenType Token{ get; set; }
+        
         public char GetTokenType()
         {
             return 'x';
