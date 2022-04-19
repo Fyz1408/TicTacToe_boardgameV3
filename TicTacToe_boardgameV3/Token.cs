@@ -7,13 +7,5 @@ namespace TicTacToe_boardgameV3
             X,
             O
         }
-
-        private TokenType setTokenType{ get; set; }
-        
-        public Token(TokenType TokenType)
-        {
-            setTokenType = TokenType;
-        }
-        
     }
 }

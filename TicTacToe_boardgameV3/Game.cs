@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using TicTacToe_boardgame;
 
@@ -13,13 +14,15 @@ namespace TicTacToe_boardgameV3
 
         public Game()
         {
-            var bd = new Board();
-
-            var p1 = new Player();
-            var p2 = new Player(); 
+            Board bd = new Board();
+            Player p1 = new Player();
+            Player p2 = new Player(); 
+            
             int playerCount = 2;
             int currentTurn = 0;
+            
             bool intro = true;
+            
             while (intro)
             {
                 Console.Clear();
@@ -31,12 +34,12 @@ namespace TicTacToe_boardgameV3
 
                 while (GameStatus != 1 && GameStatus != -1)
                 {
-                    Console.WriteLine("{0}:{1} and {2}:{3}", p1.Name, p1.PlayerTokens, p2.Name, p2.PlayerTokens);
-                
                     int currentPlayerId;
                     currentPlayerId = currentTurn % 2 != 0 ? 1 : 0;
                     var cpi = currentPlayerId == 1 ? p1 : p2;
                     
+                    Console.Clear();
+                    Console.WriteLine("{0}:{1} and {2}:{3}", p1.Name, p1.Token, p2.Name, p2.Token);
                     Console.WriteLine("{0}'s turn", cpi.Name);
 
                     if (intro)
@@ -49,29 +52,60 @@ namespace TicTacToe_boardgameV3
                         bd.DisplayBoard();
                     }
 
-                    int playerPick;
-                    while (!int.TryParse(Console.ReadLine(), out playerPick))
+                    int playerPick = 0;
+                    int[] validInput = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+                    bool validPick = true;
+
+                    if (int.TryParse(Console.ReadLine(), out playerPick))
                     {
-                        Console.WriteLine("Not valid ");
+                        if (!validInput.Contains(playerPick))
+                        {
+                            validPick = false;    
+                        }
                     }
-                
-                    TakeTurn(cpi.Token, playerPick, bd);
-                    currentTurn++;
-                
+                    else
+                    {
+                        validPick = false;
+                    }
+               
+
+                    if (validPick)
+                    {
+                        if ( TakeTurn(cpi.Token, playerPick, bd)) 
+                        {
+                            currentTurn++;
+                            Console.Clear();
+                            Console.WriteLine("Validating results");
+                            displayProgressbar(10);
+                        }
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid pick, please try again ");
+                        displayProgressbar(20);
+                    }
                     ValidateResults(bd);
-                
+                    
+                    bd.DisplayBoard();
+                    
                     if (GameStatus == 1)
                     {
-                        Console.WriteLine("SOMEONE WON! {0}", currentTurn);
+                        Console.WriteLine("{0} WON!", cpi.Name);
                         Console.ReadKey();
                     }
 
                     if (GameStatus == -1)
                     {
-                        Console.WriteLine("DRAW {0}", currentTurn);
+                        Console.WriteLine("ITS A DRAW!");
                         Console.ReadKey();
                     }
                 }
+
+                Console.WriteLine("To play again enter p, to quit press q");
+
+                Console.ReadKey();
+
             }
         }
 
@@ -112,34 +146,28 @@ namespace TicTacToe_boardgameV3
             int playerToStart = rnd.Next(0, playerCount+1);
             var pts = playerToStart == 1 ? p1 : p2;
                     
-            var pgb = new ProgressBar();
-            using (pgb) {
-                for (int i = 0; i <= 100; i++) {
-                    pgb.Report((double) i / 100);
-                    Thread.Sleep(20);
-                }
-            }
+            displayProgressbar(20);
 
             Console.Clear();
             
             Console.WriteLine("{0} was chosen to start! Click when you're ready to play!", pts.Name);
+            Console.ReadKey();
                 
             return playerToStart; 
         }
 
-        private void TakeTurn( Token.TokenType tokenType, int FieldPicked, Board bd)
+        private bool TakeTurn( Token.TokenType tokenType, int FieldPicked, Board bd)
         {
             if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
             {
                 bd.Fields[FieldPicked].FieldState = tokenType.ToString();
+                return true;
             }
-            else
-            {
-                Console.WriteLine("Sorry the row {0} is already marked with {1}\n", FieldPicked, bd.Fields[FieldPicked]);
-                Console.WriteLine("Please wait 2 seconds while the board is loading again.....");
-                Thread.Sleep(2000);
 
-            }
+            Console.Clear();
+            Console.WriteLine("Sorry row {0} is already marked with {1}", FieldPicked, bd.Fields[FieldPicked].FieldState);
+            displayProgressbar(20);
+            return false;
         }
 
         private void ValidateResults(Board bd)
@@ -218,5 +246,17 @@ namespace TicTacToe_boardgameV3
                 GameStatus = 0;
             }
         }
+
+        private void displayProgressbar(int ms)
+        {
+            var pgb = new ProgressBar();
+            using (pgb) {
+                for (int i = 0; i <= 100; i++) {
+                    pgb.Report((double) i / 100);
+                    Thread.Sleep(ms);
+                }
+            }   
+        }
+
     }
 }
