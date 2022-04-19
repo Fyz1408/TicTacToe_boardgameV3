@@ -7,8 +7,6 @@ namespace TicTacToe_boardgameV3
 {
     public class Game
     {
-        private List<Player> Players;
-        
         private Board Board;
 
         private int GameStatus;
@@ -17,6 +15,8 @@ namespace TicTacToe_boardgameV3
         {
             var bd = new Board();
 
+            var p1 = new Player();
+            var p2 = new Player(); 
             int playerCount = 2;
             int currentTurn = 0;
             bool intro = true;
@@ -26,17 +26,18 @@ namespace TicTacToe_boardgameV3
                 
                 if (intro)
                 {
-                    currentTurn = StartGame(playerCount);
+                    currentTurn = StartGame(playerCount, p1, p2);
                 }
 
                 while (GameStatus != 1 && GameStatus != -1)
                 {
-                    Console.WriteLine("{0}:{1} and {2}:{3}", Players[0].Name, Players[0].PlayerTokens, Players[1].Name,  Players[1].PlayerTokens);
+                    Console.WriteLine("{0}:{1} and {2}:{3}", p1.Name, p1.PlayerTokens, p2.Name, p2.PlayerTokens);
                 
                     int currentPlayerId;
                     currentPlayerId = currentTurn % 2 != 0 ? 1 : 0;
+                    var cpi = currentPlayerId == 1 ? p1 : p2;
                     
-                    Console.WriteLine("{0}'s turn", Players[currentPlayerId].Name);
+                    Console.WriteLine("{0}'s turn", cpi.Name);
 
                     if (intro)
                     {
@@ -54,7 +55,7 @@ namespace TicTacToe_boardgameV3
                         Console.WriteLine("Not valid ");
                     }
                 
-                    TakeTurn(Players[currentPlayerId].PlayerTokens[0], playerPick, bd);
+                    TakeTurn(cpi.PlayerTokens[0], playerPick, bd);
                     currentTurn++;
                 
                     ValidateResults(bd);
@@ -74,37 +75,29 @@ namespace TicTacToe_boardgameV3
             }
         }
 
-        private int StartGame( int playerCount)
+        private int StartGame( int playerCount, Player p1, Player p2)
         {
             var rnd = new Random();
-            Players = new List<Player>();
             Token.TokenType tokenType;
 
             Console.Clear();
 
             Console.WriteLine("Welcome to tic tac toe");
-                
+            
             for (int i = 1; i <= playerCount; i++)
-            { 
-                Players.Add(
-                    new Player()
-                ); 
-                
+            {
                 Console.WriteLine("Enter player {0} name:", i);
-                int p = i - 1;
-                
-                Players[p].Name = Console.ReadLine();
+                var p = i == 1 ? p1 : p2;
 
-                tokenType = p == 1 ? Token.TokenType.X : Token.TokenType.O;
+                p.Name = Console.ReadLine();
                 
-                Players[p].AddTokens(3, tokenType);
             }
             
             Console.Clear();
 
-            Console.WriteLine("Welcome {0} and {1}! \n", Players[0].Name, Players[1].Name);
+            Console.WriteLine("Welcome {0} and {1}! \n", p1.Name, p2.Name);
             
-            Console.WriteLine("{0} will play with: {1} and {2} will play with: {3} \n", Players[0].Name, Players[0].GetTokenType(), Players[1].Name, Players[1].GetTokenType());
+            Console.WriteLine("{0} will play with: {1} and {2} will play with: {3} \n", p1.Name, p1.GetTokenType(), p2.Name, p2.GetTokenType());
            
             Console.WriteLine("Lets get started, press a key when you are ready to move on");
 
@@ -114,6 +107,7 @@ namespace TicTacToe_boardgameV3
             Console.Write("Randomizing who will start... \n");
 
             int playerToStart = rnd.Next(0, playerCount+1);
+            var pts = playerToStart == 1 ? p1 : p2;
                     
             var pgb = new ProgressBar();
             using (pgb) {
@@ -125,7 +119,7 @@ namespace TicTacToe_boardgameV3
 
             Console.Clear();
             
-            Console.WriteLine("{0} was chosen to start! Click when you're ready to play!", Players[playerToStart].Name);
+            Console.WriteLine("{0} was chosen to start! Click when you're ready to play!", pts.Name);
                 
             return playerToStart; 
         }

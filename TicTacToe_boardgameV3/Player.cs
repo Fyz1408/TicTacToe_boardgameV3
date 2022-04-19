@@ -4,9 +4,13 @@ namespace TicTacToe_boardgameV3
     public class Player
     {
         public List<Token> PlayerTokens;
-        
-        public string Name { get; set; }
-        
+
+        public string Name // property
+        {
+            get;
+            set;
+        }
+
         public void AddTokens(int tokenAmount, Token.TokenType tokenType)
         {
             PlayerTokens = new List<Token>();
