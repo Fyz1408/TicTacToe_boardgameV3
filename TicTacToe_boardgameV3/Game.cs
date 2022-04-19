@@ -55,7 +55,7 @@ namespace TicTacToe_boardgameV3
                         Console.WriteLine("Not valid ");
                     }
                 
-                    TakeTurn(cpi.PlayerTokens[0], playerPick, bd);
+                    TakeTurn(cpi.Token, playerPick, bd);
                     currentTurn++;
                 
                     ValidateResults(bd);
@@ -127,11 +127,11 @@ namespace TicTacToe_boardgameV3
             return playerToStart; 
         }
 
-        private void TakeTurn( Token token, int FieldPicked, Board bd)
+        private void TakeTurn( Token.TokenType tokenType, int FieldPicked, Board bd)
         {
             if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
             {
-                bd.Fields[FieldPicked].FieldState = token.ToString();
+                bd.Fields[FieldPicked].FieldState = tokenType.ToString();
             }
             else
             {
