@@ -8,8 +8,6 @@ namespace TicTacToe_boardgameV3
 {
     public class Game
     {
-        private Board Board;
-
         private int GameStatus;
 
         public Game()
@@ -18,7 +16,6 @@ namespace TicTacToe_boardgameV3
             Player p1 = new Player();
             Player p2 = new Player(); 
             
-            int playerCount = 2;
             int currentTurn = 0;
             
             bool intro = true;
@@ -29,7 +26,7 @@ namespace TicTacToe_boardgameV3
                 
                 if (intro)
                 {
-                    currentTurn = StartGame(playerCount, p1, p2);
+                    currentTurn = StartGame( p1, p2);
                 }
 
                 while (GameStatus != 1 && GameStatus != -1)
@@ -107,7 +104,7 @@ namespace TicTacToe_boardgameV3
             }
         }
 
-        private int StartGame( int playerCount, Player p1, Player p2)
+        private int StartGame( Player p1, Player p2)
         {
             var rnd = new Random();
 
@@ -115,7 +112,7 @@ namespace TicTacToe_boardgameV3
 
             Console.WriteLine("Welcome to tic tac toe");
             
-            for (int i = 1; i <= playerCount; i++)
+            for (int i = 1; i <= 2; i++)
             {
                 Console.WriteLine("Enter player {0} name:", i);
                 var p = i == 1 ? p1 : p2;
@@ -141,7 +138,7 @@ namespace TicTacToe_boardgameV3
             
             Console.Write("Randomizing who will start... \n");
 
-            int playerToStart = rnd.Next(0, playerCount+1);
+            int playerToStart = rnd.Next(0, 2+1);
             var pts = playerToStart == 1 ? p1 : p2;
                     
             displayProgressbar(20);
@@ -154,16 +151,16 @@ namespace TicTacToe_boardgameV3
             return playerToStart; 
         }
 
-        private bool TakeTurn( Token.TokenType tokenType, int FieldPicked, Board bd)
+        private bool TakeTurn( Token.TokenType tokenType, int fieldPicked, Board bd)
         {
-            if (bd.Fields[FieldPicked].FieldState != "X" && bd.Fields[FieldPicked].FieldState != "O")
+            if (bd.Fields[fieldPicked].FieldState != "X" && bd.Fields[fieldPicked].FieldState != "O")
             {
-                bd.Fields[FieldPicked].FieldState = tokenType.ToString();
+                bd.Fields[fieldPicked].FieldState = tokenType.ToString();
                 return true;
             }
 
             Console.Clear();
-            Console.WriteLine("Sorry row {0} is already marked with {1}", FieldPicked, bd.Fields[FieldPicked].FieldState);
+            Console.WriteLine("Sorry row {0} is already marked with {1}", fieldPicked, bd.Fields[fieldPicked].FieldState);
             displayProgressbar(20);
             return false;
         }

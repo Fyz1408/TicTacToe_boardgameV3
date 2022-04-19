@@ -3,13 +3,17 @@ namespace TicTacToe_boardgameV3
 {
     public class Player
     {
-        public string Name // property
+        public string Name
         {
             get;
             set;
         }
 
-        public Token.TokenType Token{ get; set; }
+        public Token.TokenType Token
+        {
+            get; 
+            set;
+        }
         
     }
 }
