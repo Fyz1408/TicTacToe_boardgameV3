@@ -40,7 +40,7 @@ namespace TicTacToe_boardgameV3
                     
                     Console.Clear();
                     Console.WriteLine("{0}:{1} and {2}:{3}", p1.Name, p1.Token, p2.Name, p2.Token);
-                    Console.WriteLine("{0}'s turn", cpi.Name);
+                    Console.WriteLine("Its {0}'s turn, pick a spot to place your token: {1}", cpi.Name, cpi.Token);
 
                     if (intro)
                     {
@@ -52,7 +52,7 @@ namespace TicTacToe_boardgameV3
                         bd.DisplayBoard();
                     }
 
-                    int playerPick = 0;
+                    int playerPick;
                     int[] validInput = {1, 2, 3, 4, 5, 6, 7, 8, 9};
                     bool validPick = true;
 
@@ -82,7 +82,7 @@ namespace TicTacToe_boardgameV3
                     else
                     {
                         Console.Clear();
-                        Console.WriteLine("Invalid pick, please try again ");
+                        Console.WriteLine("Invalid input, please try again ");
                         displayProgressbar(20);
                     }
                     ValidateResults(bd);
@@ -92,20 +92,18 @@ namespace TicTacToe_boardgameV3
                     if (GameStatus == 1)
                     {
                         Console.WriteLine("{0} WON!", cpi.Name);
-                        Console.ReadKey();
                     }
 
                     if (GameStatus == -1)
                     {
                         Console.WriteLine("ITS A DRAW!");
-                        Console.ReadKey();
                     }
                 }
 
-                Console.WriteLine("To play again enter p, to quit press q");
+                Console.WriteLine("To play again enter P, to quit enter Q");
 
-                Console.ReadKey();
-
+                intro = Console.ReadLine() == "p" || Console.ReadLine() == "P";
+                
             }
         }
 
