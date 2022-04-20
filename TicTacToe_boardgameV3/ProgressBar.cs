@@ -15,6 +15,8 @@ namespace TicTacToe_boardgameV3 {
 		private bool disposed = false;
 		private int animationIndex = 0;
 
+		// Progressbar from github 
+		// https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
 		public ProgressBar() {
 			timer = new Timer(TimerHandler);
 
