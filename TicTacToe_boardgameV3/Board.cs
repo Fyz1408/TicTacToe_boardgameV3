@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicTacToe_boardgameV3;
 
-namespace TicTacToe_boardgame
+
+namespace TicTacToe_boardgameV3
 {
     //Constructor
     public class Board

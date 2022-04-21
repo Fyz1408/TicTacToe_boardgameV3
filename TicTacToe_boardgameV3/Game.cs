@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using TicTacToe_boardgame;
 
 namespace TicTacToe_boardgameV3
 {
