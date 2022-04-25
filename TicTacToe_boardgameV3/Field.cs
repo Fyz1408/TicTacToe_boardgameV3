@@ -3,7 +3,12 @@
     //Get and sets the state of the field
     public class Field
     {
-        public string FieldState { get; set; }
+        private string fieldState; //field
+        public string FieldState //property
+        {
+            get { return fieldState; } //get method
+            set { fieldState = value; } //set method
+        }
         
         public Field(int fieldId)
         {
